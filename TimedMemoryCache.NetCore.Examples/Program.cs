@@ -27,6 +27,9 @@ namespace TimedMemoryCache.NetCore.Examples
                 Console.WriteLine($"[{DateTime.Now.ToLongTimeString()}] Removed '{key}'");
             };
 
+            var json = cache.Save<string>();
+            cache.Load(json);
+
             Console.ReadKey();
         }
     }

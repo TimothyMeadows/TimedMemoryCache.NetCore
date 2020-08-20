@@ -136,6 +136,20 @@ namespace TimedMemoryCache.NetCore
             return entry;
         }
 
+        public new void Load<T>(T data, bool clear = true)
+        {
+            if (clear)
+                _timing.Clear();
+
+            base.Load(data, clear);
+            foreach (var entry in this)
+                _timing.TryAdd(entry.Key, new CacheTimingEntry()
+                {
+                    Timestamp = DateTime.UtcNow.ToBinary(),
+                    Timeout = _default
+                });
+        }
+
         private void Timeout_Elapsed(object state)
         {
             foreach (var (key, value) in _timing)
