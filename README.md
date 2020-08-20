@@ -1,7 +1,7 @@
 # TimedMemoryCache.NetCore
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![nuget](https://img.shields.io/nuget/v/TimedMemoryCache.NetCore.svg)](https://www.nuget.org/packages/TimedMemoryCache.NetCore/)
 
-Implementation of a parallel thread-safe in-memory caching system with save, and load support suited for 'state' programming and easy timeout support for time sensitive caching.
+Implementation of a parallel thread-safe in-memory caching system with save, and load support suited for 'state' programming and easy timeout support for time sensitive caching. Depends on [MemoryCache.NetCore](https://github.com/TimothyMeadows/MemoryCache.NetCore)
 
 # Install
 
