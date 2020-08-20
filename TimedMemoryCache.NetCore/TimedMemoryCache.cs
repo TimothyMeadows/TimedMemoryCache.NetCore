@@ -11,12 +11,14 @@ namespace TimedMemoryCache.NetCore
         public event TimeoutCallback OnTimeout;
         private readonly Timer _timeout;
         private readonly long _default;
+        private bool _overload;
+        private long _period = 1;
 
-        public TimedMemoryCache(long timeout)
+        public TimedMemoryCache(long seconds)
         {
             _timing = new ConcurrentDictionary<string, CacheTimingEntry>();
             _timeout = new Timer(Timeout_Elapsed, null, 0, 1000);
-            _default = timeout;
+            _default = seconds;
         }
 
         public new dynamic this[string key]
@@ -152,6 +154,16 @@ namespace TimedMemoryCache.NetCore
 
         private void Timeout_Elapsed(object state)
         {
+            // This is for very large caches, ideally we want to process all data in the cache in a single tick
+            // if we are unable too, slowly start raising the interval until we can.
+            if (_overload)
+            {
+                _period++;
+                _timeout.Change(0, _period * 1000);
+                return;
+            }
+
+            _overload = true;
             foreach (var (key, value) in _timing)
             {
                 var time = DateTime.FromBinary(value.Timestamp);
@@ -163,6 +175,8 @@ namespace TimedMemoryCache.NetCore
 
                 OnTimeout?.Invoke(this, key, entry);
             }
+
+            _overload = false;
         }
     }
 }
