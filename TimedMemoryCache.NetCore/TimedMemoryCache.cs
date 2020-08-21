@@ -173,7 +173,7 @@ namespace TimedMemoryCache.NetCore
                 var entry = base.Delete<dynamic>(key);
                 _timing.TryRemove(key, out _);
 
-                OnTimeout?.Invoke(this, key, entry);
+                OnTimeout?.Invoke(this, key, entry, value.Timeout);
             }
 
             _overload = false;
