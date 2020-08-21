@@ -22,7 +22,7 @@ namespace TimedMemoryCache.NetCore.Examples
             cache.Write("caw3", "third caw!", 20);
 
             // You can use the OnTimeout event to catch the key, and value of what is removed. You can re-add it back if you want using source, or a stored cache variable.
-            cache.OnTimeout += (source, key, value) =>
+            cache.OnTimeout += (source, key, value, timeout) =>
             {
                 Console.WriteLine($"[{DateTime.Now.ToLongTimeString()}] Removed '{key}'");
             };
